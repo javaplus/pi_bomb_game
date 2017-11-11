@@ -29,6 +29,9 @@ def on_message(client, userdata, msg):
 def blink():
     logging.info("in blink:")
     makeButtonBlink(25)
+    makeButtonBlink(18)
+    makeButtonBlink(22)
+    makeButtonBlink(6)
 
 def makeButtonBlink(ledpin):
     global running_thread
