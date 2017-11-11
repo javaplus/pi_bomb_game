@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import logging
 import sys
 import button_blink_thread
+import setbomb
 
 running_thread = {}
 
@@ -32,6 +33,7 @@ def blink():
     makeButtonBlink(18)
     makeButtonBlink(22)
     makeButtonBlink(6)
+    setbomb.submitTime()
 
 def makeButtonBlink(ledpin):
     global running_thread
