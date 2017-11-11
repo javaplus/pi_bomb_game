@@ -18,7 +18,7 @@ class BlueThread(Thread):
 	
 	global LedPin
 	  	
-	while True:
+	while self.running:
 		GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
         	GPIO.setup(LedPin, GPIO.OUT)   # Set LedPin's mode is output
 
@@ -29,11 +29,12 @@ class BlueThread(Thread):
 
 
     def stop(self):
-	self.clean()
         self.running = False
+	time.sleep(1) #give a second for loop to stop
+	self.destroy()
 
 
-    def clean(self):
+    def destroy(self):
 	
         global LedPin
 	GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
