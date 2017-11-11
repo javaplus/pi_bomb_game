@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import logging
 import sys
-import bluebutton_thread
+import button_blink_thread
 
 running_thread = None
 
@@ -31,7 +31,7 @@ def blink():
     global running_thread
     if running_thread is not None:
         running_thread.stop()
-    running_thread = bluebutton_thread.BlueThread()
+    running_thread = button_blink_thread.BlueThread(25)
     running_thread.start()
 
 client = mqtt.Client()
