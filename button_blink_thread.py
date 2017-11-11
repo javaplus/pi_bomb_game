@@ -3,15 +3,15 @@ import time
 import RPi.GPIO as GPIO
 
 
-class BlueThread(Thread):
+class BlinkThread(Thread):
     def __init__(self,LEDPIN):
         self.running = False
 	self.LedPin = LEDPIN
-	super(BlueThread, self).__init__()
+	super(BlinkThread, self).__init__()
 
     def start(self):
         self.running = True
-        super(BlueThread, self).start()
+        super(BlinkThread, self).start()
 
     def run(self):
 	  	

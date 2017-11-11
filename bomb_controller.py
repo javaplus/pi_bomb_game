@@ -3,7 +3,7 @@ import logging
 import sys
 import button_blink_thread
 
-running_thread = None
+running_thread = {}
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -23,16 +23,22 @@ def on_message(client, userdata, msg):
     if msg.payload == "master_switch_ON": 
     	blink()
     if msg.payload == "master_switch_OFF":
-	if running_thread is not None:
-        	running_thread.stop()	
+        for key in running_thread:
+       	    running_thread[key].stop()	
 
 def blink():
     logging.info("in blink:")
+    makeButtonBlink(25)
+
+def makeButtonBlink(ledpin):
     global running_thread
-    if running_thread is not None:
-        running_thread.stop()
-    running_thread = button_blink_thread.BlueThread(25)
-    running_thread.start()
+
+    if ledpin in running_thread:
+        running_thread[ledpin].stop()
+    running_thread[ledpin] = button_blink_thread.BlinkThread(ledpin)
+    running_thread[ledpin].start()
+
+
 
 client = mqtt.Client()
 client.on_connect = on_connect
