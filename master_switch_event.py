@@ -21,9 +21,10 @@ while True:
         if input_state == True and switch_on == False:
 		switch_on = True
                 print('Button Pressed')
-                broadcastEvent("master_switch")
+                broadcastEvent("master_switch_ON")
                 time.sleep(1) # wait a second before we listen for more button presses
-	if input_state == False:
+	if input_state == False and switch_on == True:
 		switch_on = False
+		broadcastEvent("master_switch_OFF")
 
 	time.sleep(.2) # waith 200ms before checking switch status

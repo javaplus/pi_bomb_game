@@ -19,8 +19,13 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
-    blink()
-	
+    global running_thread
+    if msg.payload == "master_switch_ON": 
+    	blink()
+    if msg.payload == "master_switch_OFF":
+	if running_thread is not None:
+        	running_thread.stop()	
+
 def blink():
     logging.info("in blink:")
     global running_thread
