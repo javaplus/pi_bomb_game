@@ -15,6 +15,7 @@ running_thread = {}
 timer_process_id = None
 defuse_button = None
 time_delay = 1 
+is_master_switch_on = False
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -30,15 +31,18 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic+" Message:Payload="+str(msg.payload))
+    global is_master_switch_on
     global running_thread
     global defuse_button
     global time_delay
     if msg.payload == "master_switch_ON": 
+	is_master_switch_on = True
     	blink()
     if msg.payload == "master_switch_OFF":
+	is_master_switch_on = False
         for key in running_thread:
        	    running_thread[key].stop()	
-    if msg.payload.startswith("button") and time_delay < time.time():
+    if msg.payload.startswith("button") and time_delay < time.time() and is_master_switch_on:
 	print("Button press event detected!")
 	global timer_process_id
 
