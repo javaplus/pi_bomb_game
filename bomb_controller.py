@@ -3,8 +3,10 @@ import logging
 import sys
 import button_blink_thread
 import setbomb
+from subprocess import Popen
 
 running_thread = {}
+timer_process_id = None
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -19,13 +21,20 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print(msg.topic+" Message:Payload="+str(msg.payload))
     global running_thread
     if msg.payload == "master_switch_ON": 
     	blink()
     if msg.payload == "master_switch_OFF":
         for key in running_thread:
        	    running_thread[key].stop()	
+    if msg.payload.startswith("button"):
+	print("Button press event detected!")
+	global timer_process_id
+	timer_process_id = Popen(["sudo", "python","/home/pi/workspace/pi_timer_python/mqtt_server.py"]).pid 
+	print("timer process=" + str(timer_process_id))
+	setbomb.submitTime()	  
+
 
 def blink():
     logging.info("in blink:")
@@ -33,8 +42,7 @@ def blink():
     makeButtonBlink(18)
     makeButtonBlink(22)
     makeButtonBlink(6)
-    setbomb.submitTime()
-
+    
 def makeButtonBlink(ledpin):
     global running_thread
 
