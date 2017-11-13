@@ -21,7 +21,7 @@ while True:
         input_state = GPIO.input(int(sys.argv[1]))
         if input_state == False:
                 print('Button Pressed' + str(sys.argv[2]))
-                broadcastEvent("button_"+str(sys.argv[2]))
+                broadcastEvent("button_"+str(sys.argv[2])+":"+str(sys.argv[3]))
                 time.sleep(1) # wait a second before we listen for more button presses
 
 	time.sleep(.2) # waith 200ms before checking switch status

@@ -10,12 +10,13 @@ import signal
 import time
 import urllib2
 import json
+import RPi.GPIO as GPIO
 
 running_thread = {}
 timer_process_id = None
 defuse_button = None
 time_delay = 1 
-is_master_switch_on = False
+take_input = False
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -23,7 +24,6 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    #client.subscribe("$SYS/#")
     client.subscribe("events/button")
 
 
@@ -31,31 +31,35 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic+" Message:Payload="+str(msg.payload))
-    global is_master_switch_on
+    global take_input
     global running_thread
     global defuse_button
     global time_delay
     if msg.payload == "master_switch_ON": 
-	is_master_switch_on = True
+	take_input = True
     	blink()
     if msg.payload == "master_switch_OFF":
-	is_master_switch_on = False
+	take_input = False
         for key in running_thread:
        	    running_thread[key].stop()	
-    if msg.payload.startswith("button") and time_delay < time.time() and is_master_switch_on:
+    if msg.payload.startswith("button") and time_delay < time.time() and take_input:
 	print("Button press event detected!")
 	global timer_process_id
-
+        buttonLEDpin = msg.payload.split(':')[1] 
 	if defuse_button is None:
 		timer_process_id = Popen(["sudo", "python","/home/pi/workspace/pi_timer_python/mqtt_server.py"],preexec_fn=os.setsid).pid 
 		print("timer process=" + str(timer_process_id))
 		setbomb.submitTime()	  
 		defuse_button = msg.payload
+		take_input = False # require the switch to be turned off and on again before taking input
+		#stop blinking lights
+	        lightUpButton(buttonLEDpin)	
 	elif defuse_button == msg.payload:
 		print("killing process"+ str(timer_process_id))
 		status =os.killpg(os.getpgid(timer_process_id),signal.SIGTERM)
-		defuseSuccess()
+		defuseSuccess(buttonLEDpin)
 		defuse_button = None
+		take_input = False
 	else:
 		defuseFailure()	
 		time_delay = time.time() + 15
@@ -70,7 +74,8 @@ def defuseFailure():
 
 	response = urllib2.urlopen(req, json.dumps(data))
 
-def defuseSuccess(): 
+def defuseSuccess(pinLED): 
+	lightUpButton(pinLED)
 	data = { "say":"Bomb has been defused! Bomb has been defused! Stop, Stop, Stop, Stop stop stop", "parms" : "-s 140 -ven-us+f3"}
         
 	req = urllib2.Request('http://10.0.0.1:5000/say')
@@ -96,6 +101,15 @@ def makeButtonBlink(ledpin):
         running_thread[ledpin].stop()
     running_thread[ledpin] = button_blink_thread.BlinkThread(ledpin)
     running_thread[ledpin].start()
+
+def lightUpButton(pinId):
+	global running_thread
+	for key in running_thread:
+        	running_thread[key].stop()
+
+	GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
+       	GPIO.setup(int(pinId), GPIO.OUT)   # Set LedPin's mode is output
+    	GPIO.output(int(pinId), GPIO.HIGH)  # led on
 
 
 

@@ -20,14 +20,15 @@ class BlinkThread(Thread):
         	GPIO.setup(self.LedPin, GPIO.OUT)   # Set LedPin's mode is output
 
     		GPIO.output(self.LedPin, GPIO.HIGH)  # led on
-    		time.sleep(1)
-    		GPIO.output(self.LedPin, GPIO.LOW) # led off
-    		time.sleep(1)
+    		time.sleep(.6)
+		if(self.running):#after waking up make sure we are still running
+    			GPIO.output(self.LedPin, GPIO.LOW) # led off
+    			time.sleep(.6)
 
 
     def stop(self):
         self.running = False
-	time.sleep(1) #give a second for loop to stop
+	#time.sleep(1) #give a second for loop to stop
 	self.destroy()
 
 
