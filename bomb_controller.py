@@ -11,6 +11,11 @@ import time
 import urllib2
 import json
 import RPi.GPIO as GPIO
+try:
+    import display_7segment as display
+except BaseException as ex:
+    print(ex.message)
+    pass
 
 running_thread = {}
 timer_process_id = None
@@ -42,6 +47,10 @@ def on_message(client, userdata, msg):
 	take_input = False
         for key in running_thread:
        	    running_thread[key].stop()	
+	#if bomb is defused and we switch it off clear display
+	if defuse_button is None:
+		display.clear()
+		display.writeToDisplay('')
     if msg.payload.startswith("button") and time_delay < time.time() and take_input:
 	print("Button press event detected!")
 	global timer_process_id
@@ -60,6 +69,7 @@ def on_message(client, userdata, msg):
 		defuseSuccess(buttonLEDpin)
 		defuse_button = None
 		take_input = False
+		display.writeToDisplay('----')
 	else:
 		defuseFailure()	
 		time_delay = time.time() + 15
