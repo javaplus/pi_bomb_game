@@ -1,6 +1,8 @@
 import json
 import urllib2
+import os
 
+serverIP = os.environ['pi_server_ip']
 
 def submitTime():
 	data = {
@@ -11,7 +13,7 @@ def submitTime():
         
 
 
-	req = urllib2.Request('http://10.0.0.1:5000/timer')
+	req = urllib2.Request('http://' + serverIP + ':5000/timer')
 	req.add_header('Content-Type', 'application/json')
 
 	response = urllib2.urlopen(req, json.dumps(data))

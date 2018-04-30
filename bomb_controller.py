@@ -22,6 +22,7 @@ timer_process_id = None
 defuse_button = None
 time_delay = 1 
 take_input = False
+serverIP = os.environ['pi_server_ip']
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -79,7 +80,7 @@ def on_message(client, userdata, msg):
 def defuseFailure(): 
 	data = { "say":"Bomb defusal failure! Bomb defusal failure! Lock out for 15 seconds", "parms" : "-s 140 -ven-us+f3"}
         
-	req = urllib2.Request('http://10.0.0.1:5000/say')
+	req = urllib2.Request('http://' + serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 
 	response = urllib2.urlopen(req, json.dumps(data))
@@ -88,7 +89,7 @@ def defuseSuccess(pinLED):
 	lightUpButton(pinLED)
 	data = { "say":"Bomb has been defused! Bomb has been defused! Stop, Stop, Stop, Stop stop stop", "parms" : "-s 140 -ven-us+f3"}
         
-	req = urllib2.Request('http://10.0.0.1:5000/say')
+	req = urllib2.Request('http://'+ serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 
 	response = urllib2.urlopen(req, json.dumps(data))
