@@ -87,8 +87,9 @@ def defuseFailure():
 
 def defuseSuccess(pinLED): 
 	lightUpButton(pinLED)
-	data = { "say":"Bomb has been defused! Bomb has been defused! Stop, Stop, Stop, Stop stop stop", "parms" : "-s 140 -ven-us+f3"}
+	data2 = { "say":"Bomb has been defused! Bomb has been defused! Stop, Stop, Stop, Stop stop stop", "parms" : "-s 140 -ven-us+f3"}
         
+	data = { "say":"Bomb has been defused! Bomb has been defused!", "parms" : "-s 140 -ven-us+f3"}
 	req = urllib2.Request('http://'+ serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 

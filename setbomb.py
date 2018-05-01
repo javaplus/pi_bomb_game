@@ -13,7 +13,7 @@ def submitTime():
 
 	data = {
  "minutes":"1",
-"speaktime":[{"time":"0:58", "say":"You have less than 1 minute to defuse the device!", "parms" : "-s 140 -ven-us+f3"},{"time":"0:30", "say":"30 seconds remaining, 30 seconds." , "parms": "-s 160"},{"time":"0:10","say":"10, 9, 8, 7, 6, 5, 4, 3, 2, 1", "parms": "-s 110"},{"time":"0:01","say":"", "file": "/home/pi/grenade.wav"}],
+"speaktime":[{"time":"0:58", "say":"You have less than 1 minute to defuse the device! Less than 1 minute! What are you waiting on?", "parms" : "-s 120 -ven-us+f3"},{"time":"0:30", "say":"30 seconds remaining, 30 seconds." , "parms": "-s 160"},{"time":"0:10","say":"10, 9, 8, 7, 6, 5, 4, 3, 2, 1", "parms": "-s 110"},{"time":"0:01","say":"", "file": "/home/pi/grenade.wav"}],
         "speakinterval":[{"interval":"5", "say":"%min% Minutes Remaining, %min% Minutes."}]
 	}   
 

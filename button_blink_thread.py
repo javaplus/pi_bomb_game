@@ -19,7 +19,7 @@ class BlinkThread(Thread):
 		GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
         	GPIO.setup(self.LedPin, GPIO.OUT)   # Set LedPin's mode is output
 
-    		GPIO.output(self.LedPin, GPIsO.HIGH)  # led on
+    		GPIO.output(self.LedPin, GPIO.HIGH)  # led on
     		time.sleep(.6)
 		if(self.running):#after waking up make sure we are still running
     			GPIO.output(self.LedPin, GPIO.LOW) # led off
