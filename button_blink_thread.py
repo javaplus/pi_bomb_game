@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 class BlinkThread(Thread):
     def __init__(self,LEDPIN):
         self.running = False
-		self.LedPin = LEDPIN
+	self.LedPin = LEDPIN
 	super(BlinkThread, self).__init__()
 
     def start(self):
