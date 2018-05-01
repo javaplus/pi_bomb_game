@@ -57,7 +57,7 @@ def on_message(client, userdata, msg):
 	global timer_process_id
         buttonLEDpin = msg.payload.split(':')[1] 
 	if defuse_button is None:
-		timer_process_id = Popen(["sudo", "python","/home/pi/workspace/pi_timer_python/mqtt_server.py"],preexec_fn=os.setsid).pid 
+		timer_process_id = Popen(["python","/home/pi/workspace/pi_timer_python/mqtt_server.py"],preexec_fn=os.setsid).pid 
 		print("timer process=" + str(timer_process_id))
 		setbomb.submitTime()	  
 		defuse_button = msg.payload
