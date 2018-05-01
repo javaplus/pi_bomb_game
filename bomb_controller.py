@@ -11,6 +11,7 @@ import time
 import urllib2
 import json
 import RPi.GPIO as GPIO
+import defuseMessage
 try:
     import display_7segment as display
 except BaseException as ex:
@@ -78,8 +79,8 @@ def on_message(client, userdata, msg):
 	print("ignoring button during lockout:" + msg.payload)
 
 def defuseFailure(): 
-	data = { "say":"Bomb defusal failure! Bomb defusal failure! Lock out for 15 seconds", "parms" : "-s 140 -ven-us+f3"}
-        
+	#data = { "say":"Bomb defusal failure! Bomb defusal failure! Lock out for 15 seconds", "parms" : "-s 140 -ven-us+f3"}
+    data = defuseMessage.getDefuseFailureMessage()   
 	req = urllib2.Request('http://' + serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 
