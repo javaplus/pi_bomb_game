@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 class BlinkThread(Thread):
     def __init__(self,LEDPIN):
         self.running = False
-	self.LedPin = LEDPIN
+		self.LedPin = LEDPIN
 	super(BlinkThread, self).__init__()
 
     def start(self):
@@ -19,7 +19,7 @@ class BlinkThread(Thread):
 		GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
         	GPIO.setup(self.LedPin, GPIO.OUT)   # Set LedPin's mode is output
 
-    		GPIO.output(self.LedPin, GPIO.HIGH)  # led on
+    		GPIO.output(self.LedPin, GPIsO.HIGH)  # led on
     		time.sleep(.6)
 		if(self.running):#after waking up make sure we are still running
     			GPIO.output(self.LedPin, GPIO.LOW) # led off
