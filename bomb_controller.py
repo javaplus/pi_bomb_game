@@ -12,6 +12,8 @@ import urllib2
 import json
 import RPi.GPIO as GPIO
 import defuseMessage
+import stoptimer
+
 try:
     import display_7segment as display
 except BaseException as ex:
@@ -79,8 +81,8 @@ def on_message(client, userdata, msg):
 	print("ignoring button during lockout:" + msg.payload)
 
 def defuseFailure(): 
-	#data = { "say":"Bomb defusal failure! Bomb defusal failure! Lock out for 15 seconds", "parms" : "-s 140 -ven-us+f3"}
-    	data = defuseMessage.getDefuseFailureMessage()   
+	data = { "say":"Bomb defusal failure! Bomb defusal failure! Lock out for 15 seconds", "parms" : "-s 140 -ven-us+f3"}
+    	#data = defuseMessage.getDefuseFailureMessage()   
 	req = urllib2.Request('http://' + serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 
@@ -90,13 +92,14 @@ def defuseSuccess(pinLED):
 	lightUpButton(pinLED)
 	data2 = { "say":"Bomb has been defused! Bomb has been defused! Stop, Stop, Stop, Stop stop stop", "parms" : "-s 140 -ven-us+f3"}
         
-	data = { "say":"Bomb has been defused! Bomb has been defused!", "parms" : "-s 140 -ven-us+f3"}
+	data = { "say":"Success! Device has been defused!", "parms" : "-s 140 -ven-us+f3"}
 	req = urllib2.Request('http://'+ serverIP +':5000/say')
 	req.add_header('Content-Type', 'application/json')
 
 	response = urllib2.urlopen(req, json.dumps(data))
-	time.sleep(1)
-	response = urllib2.urlopen(req, json.dumps(data))
+	stoptimer.submitTime()
+	#time.sleep(1)
+	#response = urllib2.urlopen(req, json.dumps(data))
 
 
 
