@@ -11,6 +11,9 @@ This module also controls starting the [button_blink_thread](https://github.com/
 
 It also causes the buttons to stop and then the button used to "arm" the device to light solid.
 
+When the device is armed, it starts the pi_timer_python repo's mqtt_server.py in order to control the countdown timer on the device.  This way it re-uses the existing code to control the timer display and speaking out the voice commands.  
+
+
 
 
 
