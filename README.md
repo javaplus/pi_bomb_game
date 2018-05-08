@@ -2,8 +2,6 @@
 
 Code to control the RaspberryPi fake bomb box.  This controls a small ADA Fruit 7 Segment display with an I2C backpack and a takes input from multiple buttons and a master control switch.
 
-NOTE: the modules that start with a color name are no longer used.
-
 
 ## bomb_controller.py
 
