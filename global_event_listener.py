@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 import logging
-import sys
+import os
 
 
 serverIP = os.environ['pi_server_ip']
